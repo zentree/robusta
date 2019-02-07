@@ -7,15 +7,15 @@
 #
 # Luis A. Apiolaza
 #############################################################
-
-library(tidyverse)
+library(ggplot2)
 source('./R/selection-index.R')
 source('./R/miscellaneous-auxiliary-functions.R')
 
 set.seed(20190131) # Reproducibility to 20190131 run
 
 # File with breeding values
-candidates <- read_csv('./data/bvs.csv')
+candidates <- read.csv('./data/bvs.csv',
+                       colClasses = c('character', rep('numeric', 5)))
 
 ### Calculating index values
 # This assumes that breeding values are in columns 2 to 6
@@ -74,16 +74,16 @@ for(geno in 1:nrow(candidates_rank)){
 }
 
 # Fixing presentation	of results
-summary_rank <- as.tibble(summary_rank)
+summary_rank <- as.data.frame(summary_rank)
 names(summary_rank) <- c('best_ranking', 'worst_ranking', 'median_ranking', 'sd_ranking')
 summary_rank$Ortet <- candidates$Ortet
 
 # Merging original breeding values with robust selection results,
 # sorting by median ranking value. Setting the variable robust
 # to TRUE if ranking never below to average
-candidates %>%
-  left_join(summary_rank, by = 'Ortet') %>%
-  arrange(median_ranking) %>%
-  mutate(robust = ifelse(worst_ranking < n_bvs/2, TRUE, FALSE)) -> candidates_choices
+candidates_choices <- merge(candidates, summary_rank, by = 'Ortet')
+candidates_choices <- candidates_choices[order(candidates_choices$median_ranking), ]
+candidates_choices$robust <- ifelse(candidates_choices$worst_ranking < n_bvs/2, TRUE, FALSE)
 
-write_csv(candidates_choices, './reports/candidates-choices.csv')
+write.csv(candidates_choices, './reports/candidates-choices.csv',
+          row.names = FALSE, quote = FALSE)
