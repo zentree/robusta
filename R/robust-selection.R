@@ -40,11 +40,14 @@ moewt <- c(0, 700, 1400)
 
 # Number of candidates with breeding values and their IDs
 n_bvs <- nrow(candidates_bv)
+threshold <- n_bvs/2
 ids <- candidates[,1]
 
 # Matrices for storing ranks, index values, and their summary stats
-candidates_rank <- matrix(0, nrow = n_bvs, ncol = nsim)
-candidates_idx <- candidates_rank
+candidates_idx <- matrix(0, nrow = n_bvs, ncol = nsim)
+rownames(candidates_idx) <- ids
+candidates_rank <- candidates_idx
+
 
 summary_rank <- matrix(0, nrow = n_bvs, ncol = 4)
 
@@ -83,7 +86,7 @@ summary_rank$Ortet <- candidates$Ortet
 # to TRUE if ranking never below to average
 candidates_choices <- merge(candidates, summary_rank, by = 'Ortet')
 candidates_choices <- candidates_choices[order(candidates_choices$median_ranking), ]
-candidates_choices$robust <- ifelse(candidates_choices$worst_ranking < n_bvs/2, TRUE, FALSE)
+candidates_choices$robust <- ifelse(candidates_choices$worst_ranking < threshold, TRUE, FALSE)
 
 write.csv(candidates_choices, './reports/candidates-choices.csv',
           row.names = FALSE, quote = FALSE)
