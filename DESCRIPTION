@@ -1,11 +1,16 @@
-Package: robusto
+Package: robusta
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Robust Selection of Genotypes Under Uncertain Economic Scenarios
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Luis A. Apiolaza
+Maintainer: Luis A. Apiolaza <Luis.Apiolaza@canterbury.ac.nz>
+Description: This package implements Robust Selection as described by
+Evison D.C. and Apiolaza L.A. 2015. Incorporating economic weights into 
+Radiata pine breeding selection decisions. Canadian Journal of Forest 
+Research 45(1): 135-140 DOI: 10.1139/cjfr-2014-036.
+    We combined genetic parameters, relative economic weights (and the
+uncertainties surrounding those weights) to find genotypes that both
+have high economic value and always perform above average.
+License: R code is released under GPL-3. Breeding values are my copyright. 
 Encoding: UTF-8
 LazyData: true
